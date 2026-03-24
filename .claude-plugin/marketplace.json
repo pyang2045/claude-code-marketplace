@@ -1,9 +1,20 @@
 {
   "name": "claude-code-marketplace",
+  "owner": {
+    "name": "pyang2045",
+    "url": "https://github.com/pyang2045/claude-code-marketplace"
+  },
   "plugins": [
     {
       "name": "devonthink",
-      "path": "plugins/devonthink"
+      "source": "./plugins/devonthink",
+      "description": "Search, create, organize, and browse DEVONthink Pro databases via MCP.",
+      "version": "1.0.0",
+      "author": {
+        "name": "pyang2045"
+      },
+      "keywords": ["devonthink", "mcp", "macos", "knowledge-management"],
+      "category": "productivity"
     }
   ]
 }
