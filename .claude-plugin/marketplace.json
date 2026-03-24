@@ -1,0 +1,9 @@
+{
+  "name": "claude-code-marketplace",
+  "plugins": [
+    {
+      "name": "devonthink",
+      "path": "plugins/devonthink"
+    }
+  ]
+}

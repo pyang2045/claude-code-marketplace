@@ -1,0 +1,9 @@
+{
+  "name": "devonthink",
+  "version": "1.0.0",
+  "description": "Search, create, organize, and browse DEVONthink Pro databases via MCP.",
+  "author": { "name": "pyang2045" },
+  "license": "MIT",
+  "keywords": ["devonthink", "mcp", "macos", "knowledge-management"],
+  "repository": "https://github.com/pyang2045/claude-code-marketplace"
+}
