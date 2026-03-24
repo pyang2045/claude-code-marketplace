@@ -60,9 +60,3 @@ Returns the records and subgroups within the specified group.
 2. For each group in results, recursively call `list_group_content` with the group UUID
 3. Build a tree view of the database structure
 4. Present to user as an indented list or tree
-
-## Instructions
-1. Create the file with exact content above
-2. Verify frontmatter
-3. Commit: `feat: add devonthink-browse skill with tool reference and workflows`
-4. Include `Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>`

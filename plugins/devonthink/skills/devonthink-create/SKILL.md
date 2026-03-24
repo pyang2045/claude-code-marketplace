@@ -66,11 +66,3 @@ mcp__devonthink__create_from_url
 
 **Create a group (folder):**
 1. `create_record` with `type: "group"`, `name`, `parentGroupUuid`
-
-## Instructions
-1. Create the file with exact content above
-2. Verify frontmatter is valid
-3. Commit: `feat: add devonthink-create skill with tool reference and workflows`
-4. Include `Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>`
-
-Report: DONE, DONE_WITH_CONCERNS, NEEDS_CONTEXT, or BLOCKED.

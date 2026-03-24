@@ -134,9 +134,3 @@ mcp__devonthink__delete_record
 1. `search` or `lookup_record` to find the record
 2. `get_record_properties` to confirm it's the right one
 3. `rename_record` with `uuid` and `newName`
-
-## Instructions
-1. Create the file with exact content above
-2. Verify frontmatter
-3. Commit: `feat: add devonthink-organize skill with tool reference and workflows`
-4. Include `Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>`

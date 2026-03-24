@@ -99,9 +99,3 @@ mcp__devonthink__get_record_content
 **Scoped search:**
 1. `search` with `query`, `databaseName: "Research"`, `groupPath: "/Papers"`
 2. Use `recordType: "PDF"` to filter to only PDF documents
-
-## Instructions
-1. Create the file with exact content above (everything between the first --- and the end)
-2. Verify frontmatter is valid (starts with ---, has name and description, closes with ---)
-3. Commit with message: `feat: add devonthink-search skill with tool reference and workflows`
-4. Include `Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>` in commit
