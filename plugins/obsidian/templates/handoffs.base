@@ -10,7 +10,9 @@ properties:
   status:
     displayName: "Status"
   date:
-    displayName: "Date"
+    displayName: "Started"
+  end:
+    displayName: "Ended"
   formula.age_days:
     displayName: "Days Ago"
   file.mtime:
@@ -25,6 +27,7 @@ views:
     order:
       - file.name
       - date
+      - end
       - status
       - formula.age_days
       - file.mtime
@@ -35,6 +38,7 @@ views:
     order:
       - file.name
       - date
+      - end
       - status
       - formula.age_days
       - file.mtime
