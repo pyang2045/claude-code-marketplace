@@ -1,5 +1,5 @@
 ---
-description: Close out the current task by writing a handoff summary into the Obsidian session log (updates today's session note or creates one).
+description: Close out the current task by writing a handoff summary into the Obsidian session log (updates this conversation's session note — even across midnight — or creates one).
 ---
 
 # /obs-close — Close task & write handoff
@@ -51,17 +51,42 @@ Get the timestamp with `date +'%Y-%m-%d %H%M'`.
 
 ### 4. Find the proper session log to update
 
-Session notes follow the convention `YYYY-MM-DD HHmm <project> session`. The SessionStart
-workflow usually already created one today. Search for it:
+Session notes follow the convention `YYYY-MM-DD HHmm <project> session`. A session may
+**cross midnight or span multiple days**, so never assume the note is dated today — the
+note's identity comes from the session, not the calendar. Resolve the target in this
+priority order:
+
+**4.1 — The note this conversation already owns (preferred, date-independent).**
+If this conversation created or appended to a session note earlier (the SessionStart
+workflow usually creates one), that exact note is the target — even if its date prefix is
+yesterday or older. Verify it still exists before using it:
+
+```bash
+obsidian read file="<session note name from this conversation>" >/dev/null && echo FOUND
+```
+
+**4.2 — Newest still-open session note for the project (lookback, not "today").**
+Only if the conversation has no known session note (e.g. context was compacted), search:
 
 ```bash
 obsidian search query="<project> session" limit=10
 ```
 
-Choose the target note:
-- Prefer a session note for **today** (`date +'%Y-%m-%d'`) matching this `<project>`.
-- If several match today, pick the most recent (highest `HHmm`).
-- If none match today, you will create a new one (step 5b).
+Parse candidate names by their `YYYY-MM-DD HHmm` prefix and check each candidate's status:
+
+```bash
+obsidian property:read name="status" file="<candidate note name>"
+```
+
+Pick the **most recent** candidate whose `status` is not `done`, dated within the **last
+3 days** — this is what catches a session that started before midnight. Ignore notes
+already marked `done` (they were closed by a previous `/obs-close`).
+
+**4.3 — Stale or missing.**
+- If the only open candidates are **older than 3 days**, treat them as stale: create a new
+  note (step 5b) and mention the stale open note(s) in the report so the user can close or
+  clean them up.
+- If nothing matches at all, create a new one (step 5b).
 
 ### 5a. If an existing session note is found — append the handoff
 
@@ -80,7 +105,12 @@ EOF
 )"
 
 obsidian property:set name="status" value="done" file="<existing session note name>"
+obsidian property:set name="end" value="$(date +'%Y-%m-%d')" type=date file="<existing session note name>"
 ```
+
+Setting `end` records the session span: the note's `date` property is the start day, `end`
+is the close day. For a same-day session they are equal; for a session that crossed
+midnight they differ — that is expected and is how multi-day sessions stay in one note.
 
 Ensure the note carries the association tags (add `handoffs` if missing). If the CLI has no
 tag-add command, note it in the appended body via an inline `#handoffs` reference.
@@ -95,6 +125,7 @@ obsidian create \
   content="---
 title: <project> session
 date: $(date +'%Y-%m-%d')
+end: $(date +'%Y-%m-%d')
 categories:
   - sessions
 tags:
@@ -116,13 +147,17 @@ status: done
 
 ### 6. Link from the project evergreen note (best effort)
 
-If a project note exists, add a wikilink to the session note under its sessions list:
+If a project note exists, add a wikilink to the session note under its sessions list.
+Use the **exact name of the target note from step 4/5** — never rebuild the name from the
+current timestamp (the target note's `HHmm` is its creation time, not the close time, so a
+rebuilt name would be a broken wikilink):
 
 ```bash
 obsidian search query="<project>" limit=5
 # If an evergreen project note is found:
+obsidian backlinks file="<session note name>"   # skip the append if the project note already links it
 obsidian append file="<Project Note>" \
-  content="\n- [[$(date +'%Y-%m-%d %H%M') <project> session]]"
+  content="\n- [[<session note name>]]"
 ```
 
 Skip silently if no project note exists — an unresolved wikilink is acceptable, but don't
@@ -153,5 +188,7 @@ user knows they can open it or embed it with `![[handoffs.base]]`.
 ### 8. Report
 
 Tell the user, in one or two lines:
-- Which note was **updated** or **created** (its exact name).
+- Which note was **updated** or **created** (its exact name). If the session crossed
+  midnight, note the span (e.g. "started 2026-07-19, closed 2026-07-20").
 - That it is tagged `#handoffs` / `#sessions` for easy retrieval (e.g. `obsidian search query="handoffs"` or a `.base`).
+- Any stale open session notes found in step 4.3, so the user can close or delete them.
