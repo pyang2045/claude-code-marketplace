@@ -128,7 +128,29 @@ obsidian append file="<Project Note>" \
 Skip silently if no project note exists — an unresolved wikilink is acceptable, but don't
 invent a project note here.
 
-### 7. Report
+### 7. Ensure the handoffs browsing base exists (one-time)
+
+This plugin ships a Bases view (`handoffs.base`) that lists every note tagged `#handoffs`.
+Install it into the vault root the first time, so the user can browse all handoffs. Skip if
+it already exists.
+
+```bash
+# Is it already in the vault?
+obsidian search query="handoffs.base" limit=3
+```
+
+If it is **not** present, copy the template into the vault root. The template lives at
+`${CLAUDE_PLUGIN_ROOT}/templates/handoffs.base`. Determine the vault root (from the
+`obsidian` CLI config, or ask the user once if it cannot be resolved), then:
+
+```bash
+cp "${CLAUDE_PLUGIN_ROOT}/templates/handoffs.base" "<vault-root>/handoffs.base"
+```
+
+Do not overwrite an existing `handoffs.base`. Mention its location once in the report so the
+user knows they can open it or embed it with `![[handoffs.base]]`.
+
+### 8. Report
 
 Tell the user, in one or two lines:
 - Which note was **updated** or **created** (its exact name).
