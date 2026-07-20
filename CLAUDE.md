@@ -13,6 +13,7 @@
 - SKILL.md requires YAML frontmatter with `name` and `description` fields
 - Commands require YAML frontmatter with `description` field
 - Author field uses object format: `{ "name": "..." }`
+- **Version bump is mandatory on every plugin change**: any edit under `plugins/<name>/` must bump that plugin's semver in BOTH `plugins/<name>/.claude-plugin/plugin.json` and its entry in root `.claude-plugin/marketplace.json` (keep the two in sync). Patch for fixes, minor for new commands/skills/features, major for breaking changes. Do this in the same commit — no separate "bump version" ask needed
 
 ## MCP Tool Naming
 - MCP tools are namespaced as `mcp__<server>__<tool_name>`
