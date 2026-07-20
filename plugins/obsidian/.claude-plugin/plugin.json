@@ -1,6 +1,6 @@
 {
   "name": "obsidian",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Obsidian vault workflow helpers driven by the obsidian CLI. Includes /obs-close to write a task-closing handoff into your session log.",
   "author": { "name": "pyang2045" },
   "license": "MIT",

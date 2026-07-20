@@ -20,7 +20,7 @@
       "name": "obsidian",
       "source": "./plugins/obsidian",
       "description": "Obsidian vault workflow helpers driven by the obsidian CLI, including /obs-close for task-closing handoff notes.",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": {
         "name": "pyang2045"
       },

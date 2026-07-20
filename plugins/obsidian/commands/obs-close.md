@@ -163,27 +163,44 @@ obsidian append file="<Project Note>" \
 Skip silently if no project note exists — an unresolved wikilink is acceptable, but don't
 invent a project note here.
 
-### 7. Ensure the handoffs browsing base exists (one-time)
+### 7. Ensure the handoffs browsing base exists (one-time, best effort)
 
 This plugin ships a Bases view (`handoffs.base`) that lists every note tagged `#handoffs`.
-Install it into the vault root the first time, so the user can browse all handoffs. Skip if
-it already exists.
+Install it into the vault root the first time, so the user can browse all handoffs.
+
+This step is **best effort**: it must never block or fail the handoff. On any problem
+(vault root unresolvable, template missing, copy fails), skip it and mention the reason
+in the report instead of erroring out.
+
+Check and install with a **filesystem test**, in one guarded block:
 
 ```bash
-# Is it already in the vault?
-obsidian search query="handoffs.base" limit=3
+VAULT="$(obsidian vault info=path)"
+if [ -z "$VAULT" ] || [ ! -d "$VAULT" ]; then
+  echo "BASE_SKIP: vault root not resolvable"
+elif [ -f "$VAULT/handoffs.base" ]; then
+  echo "BASE_EXISTS: $VAULT/handoffs.base"
+elif [ ! -f "${CLAUDE_PLUGIN_ROOT}/templates/handoffs.base" ]; then
+  echo "BASE_SKIP: plugin template missing"
+else
+  cp "${CLAUDE_PLUGIN_ROOT}/templates/handoffs.base" "$VAULT/handoffs.base" \
+    && echo "BASE_INSTALLED: $VAULT/handoffs.base" \
+    || echo "BASE_SKIP: copy failed"
+fi
 ```
 
-If it is **not** present, copy the template into the vault root. The template lives at
-`${CLAUDE_PLUGIN_ROOT}/templates/handoffs.base`. Determine the vault root (from the
-`obsidian` CLI config, or ask the user once if it cannot be resolved), then:
+Pitfalls this layout avoids — do not "simplify" back into them:
+- **Do not use `obsidian search` to test for the base.** Search only indexes notes, not
+  `.base` files, so it reports "No matches" even when `handoffs.base` is already installed,
+  which leads to a pointless install attempt.
+- **Do not use `cp -n` inside an `&&` chain.** When the destination already exists,
+  `cp -n` exits non-zero, which aborts the rest of the chain and reads as a failure even
+  though nothing is wrong. Test existence with `[ -f ... ]` first, then plain `cp`.
+- **Always quote `"$VAULT"`** — vault paths commonly contain spaces
+  (e.g. `~/Documents/Obsidian Vault`).
 
-```bash
-cp "${CLAUDE_PLUGIN_ROOT}/templates/handoffs.base" "<vault-root>/handoffs.base"
-```
-
-Do not overwrite an existing `handoffs.base`. Mention its location once in the report so the
-user knows they can open it or embed it with `![[handoffs.base]]`.
+Do not overwrite an existing `handoffs.base`. On `BASE_INSTALLED`, mention its location once
+in the report so the user knows they can open it or embed it with `![[handoffs.base]]`.
 
 ### 8. Report
 
