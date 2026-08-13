@@ -1,0 +1,9 @@
+{
+  "name": "herdr",
+  "version": "1.0.0",
+  "description": "Herdr workflow commands. /ticket opens a Herdr tab for a Jira ticket — Claude Code agent left, console top-right, Codex agent bottom-right — and seeds both agents with the ticket content fetched via the Atlassian MCP.",
+  "author": { "name": "pyang2045" },
+  "license": "MIT",
+  "keywords": ["herdr", "jira", "ticket", "workspace", "agents", "codex"],
+  "repository": "https://github.com/pyang2045/claude-code-marketplace"
+}

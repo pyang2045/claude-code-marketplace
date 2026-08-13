@@ -4,6 +4,21 @@ A collection of Claude Code plugins for integrating external tools and services.
 
 ## Available Plugins
 
+### Herdr
+
+Herdr workflow commands for driving the Herdr terminal multiplexer.
+
+**Requirements:** running inside a Herdr-managed pane (`HERDR_ENV=1`) with the `herdr` CLI on PATH; the Atlassian MCP plugin for ticket fetching (degrades to agent self-fetch without it)
+
+**Features:**
+- `/ticket SE-1234` — create a tab labelled with the Jira ticket in the current workspace (Claude Code agent left, `console` shell top-right, Codex agent bottom-right), fetch the ticket via the Atlassian MCP into a brief file, and seed both agents with it
+
+**Install:**
+
+```bash
+claude plugins add github:pyang2045/claude-code-marketplace --plugin herdr
+```
+
 ### Obsidian
 
 Obsidian vault workflow helpers driven by the shell `obsidian` CLI.

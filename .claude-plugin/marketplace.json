@@ -6,6 +6,17 @@
   },
   "plugins": [
     {
+      "name": "herdr",
+      "source": "./plugins/herdr",
+      "description": "Herdr workflow commands. /ticket opens a Herdr tab for a Jira ticket — Claude Code agent left, console top-right, Codex agent bottom-right — and seeds both agents with the ticket content fetched via the Atlassian MCP.",
+      "version": "1.0.0",
+      "author": {
+        "name": "pyang2045"
+      },
+      "keywords": ["herdr", "jira", "ticket", "workspace", "agents", "codex"],
+      "category": "productivity"
+    },
+    {
       "name": "obsidian",
       "source": "./plugins/obsidian",
       "description": "Obsidian vault workflow helpers driven by the obsidian CLI, including /obs-close for task-closing handoff notes.",
