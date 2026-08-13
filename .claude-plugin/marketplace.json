@@ -15,6 +15,17 @@
       },
       "keywords": ["obsidian", "notes", "handoff", "session-log", "knowledge-management"],
       "category": "productivity"
+    },
+    {
+      "name": "whats-up",
+      "source": "./plugins/whats-up",
+      "description": "Fast session orientation. /whats-up summarizes progress, remaining work, the next step and suggested follow-ups — grounded in git and todo state, not recall.",
+      "version": "1.0.0",
+      "author": {
+        "name": "pyang2045"
+      },
+      "keywords": ["status", "summary", "session", "orientation", "handoff", "progress"],
+      "category": "productivity"
     }
   ]
 }
