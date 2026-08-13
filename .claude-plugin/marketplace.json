@@ -6,17 +6,6 @@
   },
   "plugins": [
     {
-      "name": "devonthink",
-      "source": "./plugins/devonthink",
-      "description": "Search, create, organize, and browse DEVONthink Pro databases via MCP.",
-      "version": "1.0.0",
-      "author": {
-        "name": "pyang2045"
-      },
-      "keywords": ["devonthink", "mcp", "macos", "knowledge-management"],
-      "category": "productivity"
-    },
-    {
       "name": "obsidian",
       "source": "./plugins/obsidian",
       "description": "Obsidian vault workflow helpers driven by the obsidian CLI, including /obs-close for task-closing handoff notes.",
