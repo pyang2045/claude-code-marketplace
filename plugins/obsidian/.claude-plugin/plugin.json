@@ -1,9 +1,9 @@
 {
   "name": "obsidian",
-  "version": "1.0.2",
-  "description": "Obsidian vault workflow helpers driven by the obsidian CLI. Includes /obs-close to write a task-closing handoff into your session log.",
+  "version": "1.1.0",
+  "description": "Obsidian vault workflow helpers driven by the obsidian CLI. /obs-close writes a task-closing handoff into your session log; the obsidian-vault skill defines the vault's note formats, session-log snippets, ADR and .base templates.",
   "author": { "name": "pyang2045" },
   "license": "MIT",
-  "keywords": ["obsidian", "notes", "handoff", "session-log", "knowledge-management"],
+  "keywords": ["obsidian", "notes", "handoff", "session-log", "knowledge-management", "vault-conventions"],
   "repository": "https://github.com/pyang2045/claude-code-marketplace"
 }

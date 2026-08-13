@@ -8,13 +8,15 @@
     {
       "name": "obsidian",
       "source": "./plugins/obsidian",
-      "description": "Obsidian vault workflow helpers driven by the obsidian CLI, including /obs-close for task-closing handoff notes.",
-      "version": "1.0.2",
+      "description": "Obsidian vault workflow helpers driven by the obsidian CLI. /obs-close writes a task-closing handoff into your session log; the obsidian-vault skill defines the vault's note formats, session-log snippets, ADR and .base templates.",
+      "version": "1.1.0",
       "author": {
         "name": "pyang2045"
       },
-      "keywords": ["obsidian", "notes", "handoff", "session-log", "knowledge-management"],
-      "category": "productivity"
+      "keywords": ["obsidian", "notes", "handoff", "session-log", "knowledge-management", "vault-conventions"],
+      "category": "productivity",
+      "skills": ["obsidian-vault"],
+      "commands": ["obs-close"]
     },
     {
       "name": "whats-up",

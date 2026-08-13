@@ -1,12 +1,17 @@
 # Obsidian Plugin
 
-Command-only Claude Code plugin for Obsidian vault workflows, driven by the shell `obsidian` CLI.
+Claude Code plugin for Obsidian vault workflows, driven by the shell `obsidian` CLI.
 
 ## Structure
 - `.claude-plugin/plugin.json` — manifest
 - `commands/obs-close.md` — the `/obs-close` slash command
+- `skills/obsidian-vault/SKILL.md` — vault note formats, session-log and journal snippets, evergreen project notes, ADR and `.base` templates
 - `templates/handoffs.base` — Bases view shipped to the vault, not a Claude Code component
-- No `.mcp.json`, no `skills/` — this plugin has no MCP server; it invokes the `obsidian` CLI via Bash
+- No `.mcp.json` — this plugin has no MCP server; it invokes the `obsidian` CLI via Bash
+
+## Division of labour
+- `obsidian-vault` **defines** note formats; `/obs-close` **writes** one of them. When the session-note shape changes, both must move together — the Conventions below and the skill's Session-log snippets are the same contract stated twice.
+- `obsidian-vault` deliberately does not restate `obsidian` CLI syntax or `defuddle` flags; it points at kepano's `obsidian:obsidian-cli` and `obsidian:defuddle`, which are a hard dependency of this plugin's skill.
 
 ## Dependencies
 - Requires the `obsidian` CLI on PATH and Obsidian running (the CLI targets the open default vault)
