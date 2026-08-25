@@ -38,9 +38,6 @@ remaining work that exists; prefer it over inference.
 Only now revisit the **conversation**: decisions made, approaches abandoned and why,
 files touched, questions the user asked that were never answered.
 
-If the plugin's host session has an Obsidian session note or handoff in play *and it is
-already in context*, use it. Do not go hunting for one — this skill must work in any repo.
-
 ## Step 2 — Classify, and mark whatever cannot be proven
 
 Sort every item gathered into four buckets:

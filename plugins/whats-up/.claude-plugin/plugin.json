@@ -1,6 +1,6 @@
 {
   "name": "whats-up",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fast session orientation. /whats-up summarizes progress, remaining work, the next step and suggested follow-ups — grounded in git and todo state, not recall.",
   "author": { "name": "pyang2045" },
   "license": "MIT",
