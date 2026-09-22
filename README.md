@@ -6,12 +6,13 @@ A collection of Claude Code plugins for integrating external tools and services.
 
 ### Herdr
 
-Herdr workflow commands for driving the Herdr terminal multiplexer.
+Herdr workflow skill for a Jira ticket's workspace lifecycle, driving the Herdr terminal multiplexer.
 
-**Requirements:** running inside a Herdr-managed pane (`HERDR_ENV=1`) with the `herdr` CLI on PATH; the Atlassian MCP plugin for ticket fetching (degrades to agent self-fetch without it)
+**Requirements:** `open` must run inside a Herdr-managed pane (`HERDR_ENV=1`) with the `herdr` CLI on PATH; `close` runs from any worktree and needs `git` and `gh`. The Atlassian MCP plugin is used for Jira (`open` degrades to agent self-fetch without it)
 
 **Features:**
-- `/ticket SE-1234` — create a tab labelled with the Jira ticket in the current workspace (Claude Code agent left, `console` shell top-right, Codex agent bottom-right), fetch the ticket via the Atlassian MCP into a brief file, and seed both agents with it
+- `/ticket open SE-1234` — create a tab labelled with the Jira ticket in the current workspace (Claude Code agent left, `console` shell top-right, Codex agent bottom-right), fetch the ticket via the Atlassian MCP into a brief file, and seed both agents with it
+- `/ticket close [SE-1234] [PR#]` — close out a finished task once its PR is merged or abandoned: reconcile its docs, comment on the Jira ticket, and remove the worktree. Stops for confirmation before closing over uncommitted or unpushed work and before editing the ticket description. Ticket and PR are inferred from the current branch when omitted
 
 **Install:**
 
