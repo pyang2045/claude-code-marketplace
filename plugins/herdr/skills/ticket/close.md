@@ -27,10 +27,13 @@ later step branches on it.
 
 **If the ticket has a PR stack, confirm EVERY PR in the stack is terminal
 (merged or closed) before Step 3 removes any worktree.** A worktree removed
-while a later PR in the stack is still open strands that PR's branch. List the
-stack from the PR bodies (each carries the ordered stack list) and check each:
+while a later PR in the stack is still open strands that PR's branch. Enumerate
+the stack with `gh stack` from a checkout on one of its branches — if the
+checkout you are in is not on a stack branch, `gh stack checkout <pr-number>`
+first — then check each PR:
 
 ```bash
+gh stack view --json                          # or --short
 gh pr view <each-N> --json number,state,mergedAt,baseRefName
 ```
 

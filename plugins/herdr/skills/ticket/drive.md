@@ -89,7 +89,7 @@ column:**
 pane is created `--cwd` that worktree:
 
 ```bash
-git worktree add .claude/worktrees/<task> -b <branch>          # a writer
+git worktree add .claude/worktrees/<task> <branch>             # a writer; the branch comes from gh stack (§5)
 git worktree add --detach .claude/worktrees/<task> <branch>    # reviewer/verifier/tester
 ```
 
@@ -121,18 +121,75 @@ When the work turns up something that deserves its own ticket: create it with
 never guess an operation name. Default `Relates`; `Blocks` when the child
 blocks this ticket. Record the child key in a comment on this ticket.
 
-## 5. Stacked PRs
+## 5. Stacked PRs — `gh stack`
 
-All of the ticket's PRs form one stack, built with plain git/gh:
+All of the ticket's PRs form one stack on GitHub, managed with the `gh stack`
+extension. Never build a stack by hand with `gh pr create --base` chains.
 
-- Branch N+1 is created from branch N.
-- `gh pr create --draft --base <branch N> ...` — **every PR is a draft** until
-  the user says otherwise.
-- Every PR body carries the ticket key and the ordered stack list, e.g.
-  `Stack (SE-1234): #101 → **#102 (this)** → #103`. Update the lists when a PR
-  joins.
-- **When PR N merges, retarget PR N+1 to PR N's base — mandatory, never left to
-  GitHub:** `gh pr edit <N+1> --base <PR N's base>`.
+**Prerequisite.** `gh extension list` must show `github/gh-stack`. If it does
+not, run `gh extension install github/gh-stack` once; if that fails, report it
+and stop — do not fall back to hand-built chains. Exit code 9 from any
+`gh stack` command means stacked PRs are not enabled for the repository:
+report it to the user and stop.
+
+**Where `gh stack` runs.** Only in ORCH's own checkout: its stack tracking
+lives in that checkout's `.git/gh-stack`, and agents' worktrees cannot see it.
+Agents commit on their branch; they never push and never run `gh stack` — you
+publish. Two git facts shape every command below:
+
+- A branch checked out in an agent's worktree cannot be rebased or checked out
+  anywhere else. `gh stack add`, `rebase` and `sync` fail with "already checked
+  out at <worktree>".
+- Once more than one stack shares the trunk, `gh stack` run on the trunk fails
+  ("belongs to multiple stacks"). Run it from one of this ticket's branches.
+
+So ORCH's checkout rests on the trunk, and every `gh stack` command that
+rebases or adds runs inside this bracket, while the writers are idle:
+
+```bash
+git -C .claude/worktrees/<task> switch --detach   # each agent worktree holding a stack branch
+git switch <top stack branch>                     # ORCH checkout
+gh stack <command>
+git switch <trunk>
+git -C .claude/worktrees/<task> switch <branch>   # re-attach each
+```
+
+**Create.** First branch: `gh stack init <branch>` in ORCH's checkout (the base
+is the repo default branch; `gh stack init --base <trunk> <branch>` when the
+ticket targets another trunk). Every later piece of work: `gh stack add
+<branch>` from the top of the stack, inside the bracket. This replaces
+creating branch N+1 from branch N. Then `git switch <trunk>` and give the
+branch to its writer's worktree (§3).
+
+**Publish.** `gh stack submit --auto` pushes every branch, creates the missing
+PRs, updates bases and links the stack on GitHub. With `--auto`, new PRs are
+created as **drafts**; never pass `--open`, which creates them ready for review
+and marks existing ones ready too. After every submit, check each PR the stack
+lists with `gh pr view <N> --json isDraft`; any that is not a draft, convert with
+`gh pr ready --undo <N>`. Every PR stays a draft until the user says otherwise.
+
+**PR bodies** carry the ticket key. Do not hand-write stack lists: GitHub shows
+a stack icon on each PR and a stack map in the merge box.
+
+**Keep in sync.** After the trunk moves, and **every time a lower PR merges**,
+run `gh stack sync` inside the bracket: it fetches, fast-forwards the trunk,
+cascade-rebases the stack, pushes with `--force-with-lease`, and syncs PR state.
+It never opens PRs. Exit code 3 is a rebase conflict — sync restores every
+branch; run `gh stack rebase`, get the conflict resolved (by the branch's writer
+for anything beyond trivial), then `gh stack rebase --continue`, or
+`gh stack rebase --abort`. A divergence between the local and GitHub stacks
+aborts sync without pushing: report it to the user.
+
+**Inspect.** `gh stack view --short` (`--json` for scripts). Use its output in
+every report and in the hand-off (§7).
+
+**PRs opened by hand** before the stack existed: `gh stack link <pr> <pr> ...`
+(bottom to top) brings them into the stack. Never close and re-create them.
+
+**Merge** is the user's decision. If the user asks you to merge, merge the stack
+with `gh stack merge <top PR> --yes --merge-method <the repo's method>`, never
+per-PR `gh pr merge`. It merges everything up to that PR at once and refuses
+drafts, so the user marks them ready first.
 
 ## 6. Verify before you claim
 
@@ -159,7 +216,7 @@ Done decision lives.
 | Moved to In Review when PR 1 opened, with PR 2 still to be written | Code still pending = In Progress. |
 | After a review fix: "There is no Jira change; the ticket stays In Review." | A code item after In Review moves it back to In Progress first. |
 | `transitionJiraIssue … id 41` at "everything merged" | Done belongs to `/ticket close`. |
-| `gh pr create` without `--draft` | Draft until the user says otherwise. |
+| `gh pr create` without `--draft` | Draft until the user says otherwise: `gh stack submit --auto`, never `--open`, then check `isDraft`. |
 | `git worktree remove …se-2628` then `herdr pane close <IMPL>` | Pane first. A worktree removed under a live pane leaves an agent rooted in a deleted path. |
 | At "everything merged", went straight into `/ticket close` and its Done decision (seen with this file, before §7) | `drive` ends at the hand-off. The user starts `close`. |
 | "Moving fast: I skipped my own re-reading of work, not verification." | Speed never skips a gate above; it only skips optional polish. |
@@ -172,6 +229,8 @@ Done decision lives.
 - Two agents' panes with the same `--cwd`
 - In Review while any PR still needs code
 - Any transition to Done
-- `gh pr create` without `--draft`; a merged PR N whose N+1 still targets N's branch
+- `gh stack submit` without `--auto`, or with `--open`; any hand-run `gh pr create`
+- A lower PR merged and `gh stack sync` was not run
+- A `gh stack` command run from an agent's worktree, or while an agent's worktree still has a stack branch checked out
 - `git worktree remove` for a pane that is still open
 - Invoking `/ticket close` from `drive`

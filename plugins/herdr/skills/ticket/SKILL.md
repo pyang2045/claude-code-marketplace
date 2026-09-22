@@ -37,5 +37,5 @@ require Herdr (`HERDR_ENV=1`); `close` does not.
 | When | Do |
 |---|---|
 | New ticket, want a workspace | `/ticket start SE-1234` — one new tab, orchestrator only |
-| You are that orchestrator | `/ticket drive SE-1234` — audit, status, agents, PR stack |
+| You are that orchestrator | `/ticket drive SE-1234` — audit, status, agents, `gh stack` PRs |
 | PRs merged or work abandoned | `/ticket close` — docs, ticket comment, worktree |
