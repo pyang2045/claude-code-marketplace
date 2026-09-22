@@ -8,12 +8,12 @@
     {
       "name": "herdr",
       "source": "./plugins/herdr",
-      "description": "Herdr workflow commands. /ticket opens a Herdr tab for a Jira ticket — Claude Code agent left, console top-right, Codex agent bottom-right — and seeds both agents with the ticket content fetched via the Atlassian MCP.",
-      "version": "1.0.0",
+      "description": "Herdr workflow skill for a Jira ticket's workspace lifecycle. /ticket start SE-1234 opens a Herdr tab holding one orchestrator agent seeded with the ticket. /ticket drive SE-1234 is the orchestrator's playbook: description audit, Jira status, on-demand agents in their own worktrees, child tickets, and a stack of draft PRs. /ticket close [SE-1234] [PR#] closes out finished work: reconciles its docs, updates the Jira ticket, and tears down the worktree.",
+      "version": "2.0.0",
       "author": {
         "name": "pyang2045"
       },
-      "keywords": ["herdr", "jira", "ticket", "workspace", "agents", "codex"],
+      "keywords": ["herdr", "jira", "ticket", "workspace", "agents", "codex", "orchestrator", "stacked-prs", "close-task", "worktree"],
       "category": "productivity"
     },
     {
