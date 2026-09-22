@@ -39,7 +39,7 @@ After an edit, **verify the write landed**: re-read the issue and check that
 | In Progress | 21 | after the audit, **before the first dispatch** |
 | In Review | 31 | only when **no further code change is expected** on any of the ticket's PRs |
 | back to In Progress | 21 | a review round produces a code item after In Review — **before** dispatching it |
-| Done | 41 | **never from `drive`.** Done is `/ticket close`'s decision. |
+| Done | 41 | **never from `drive`.** Done is `/jira-ticket:ticket close`'s decision. |
 
 For another project, list transitions with `listJiraIssueTransitions` and pick
 the one whose target status matches.
@@ -200,8 +200,8 @@ confirm the test count is non-zero.
 ## 7. Hand off when everything is merged
 
 When every PR of the ticket is merged, report in your pane: the PRs, what is
-left open, and that `/ticket close <TICKET> [PR]` is next. **Do not invoke
-`/ticket close` yourself** — running it is the user's call, and it is where the
+left open, and that `/jira-ticket:ticket close <TICKET> [PR]` is next. **Do not invoke
+`/jira-ticket:ticket close` yourself** — running it is the user's call, and it is where the
 Done decision lives.
 
 ## Rationalizations (from baseline runs without this file)
@@ -215,10 +215,10 @@ Done decision lives.
 | Dispatches used `--wait` and no message-back line | `--wait` ends at the first settle; a blocked or contradicting agent has no way to reach you. |
 | Moved to In Review when PR 1 opened, with PR 2 still to be written | Code still pending = In Progress. |
 | After a review fix: "There is no Jira change; the ticket stays In Review." | A code item after In Review moves it back to In Progress first. |
-| `transitionJiraIssue … id 41` at "everything merged" | Done belongs to `/ticket close`. |
+| `transitionJiraIssue … id 41` at "everything merged" | Done belongs to `/jira-ticket:ticket close`. |
 | `gh pr create` without `--draft` | Draft until the user says otherwise: `gh stack submit --auto`, never `--open`, then check `isDraft`. |
 | `git worktree remove …se-2628` then `herdr pane close <IMPL>` | Pane first. A worktree removed under a live pane leaves an agent rooted in a deleted path. |
-| At "everything merged", went straight into `/ticket close` and its Done decision (seen with this file, before §7) | `drive` ends at the hand-off. The user starts `close`. |
+| At "everything merged", went straight into `/jira-ticket:ticket close` and its Done decision (seen with this file, before §7) | `drive` ends at the hand-off. The user starts `close`. |
 | "Moving fast: I skipped my own re-reading of work, not verification." | Speed never skips a gate above; it only skips optional polish. |
 
 ## Red flags — stop and re-read the section
@@ -233,4 +233,4 @@ Done decision lives.
 - A lower PR merged and `gh stack sync` was not run
 - A `gh stack` command run from an agent's worktree, or while an agent's worktree still has a stack branch checked out
 - `git worktree remove` for a pane that is still open
-- Invoking `/ticket close` from `drive`
+- Invoking `/jira-ticket:ticket close` from `drive`
