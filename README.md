@@ -4,9 +4,9 @@ A collection of Claude Code plugins for integrating external tools and services.
 
 ## Available Plugins
 
-### Herdr
+### Jira Ticket
 
-Herdr workflow skill for a Jira ticket's workspace lifecycle, driving the Herdr terminal multiplexer.
+Jira ticket workspace lifecycle skill, driving the Herdr terminal multiplexer. Invoked as `/jira-ticket:ticket start|drive|close` (written `/ticket` below for short).
 
 **Requirements:** `start` and `drive` must run inside a Herdr-managed pane (`HERDR_ENV=1`) with the `herdr` CLI on PATH; `drive` also uses `git`, `gh` with the `github/gh-stack` extension (and stacked PRs enabled on the repository), and Claude Code and Codex agents. `close` runs from any worktree and needs `git` and `gh`. The Atlassian MCP plugin is used for Jira (`start` degrades to agent self-fetch without it)
 
@@ -18,7 +18,7 @@ Herdr workflow skill for a Jira ticket's workspace lifecycle, driving the Herdr 
 **Install:**
 
 ```bash
-claude plugins add github:pyang2045/claude-code-marketplace --plugin herdr
+claude plugins add github:pyang2045/claude-code-marketplace --plugin jira-ticket
 ```
 
 ### Obsidian
