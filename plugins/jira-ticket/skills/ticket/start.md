@@ -4,7 +4,7 @@ You are the **invoking** session, in the user's original tab. Your job ends when
 the orchestrator in the new tab has been handed the brief. You do not run the
 ticket, and you do not create any other pane: the tab gets exactly one pane,
 LEFT, full height, holding the orchestrator. The orchestrator builds its own
-right column later (`/ticket drive`).
+right column later (`/jira-ticket:ticket drive`).
 
 Follow these steps exactly. Parse every ID from the JSON the CLI returns — never
 guess IDs, and never use `--current` or omit a pane target (this session's pane
@@ -13,7 +13,7 @@ of the new tab's).
 
 1. Check preconditions (the ticket argument is the `start` remainder):
    - If the ticket argument is missing or does not match `^[A-Za-z]+-[0-9]+$`,
-     show usage `/ticket start SE-1234` and stop.
+     show usage `/jira-ticket:ticket start SE-1234` and stop.
    - Run `echo "HERDR_ENV=${HERDR_ENV:-unset} WORKSPACE=${HERDR_WORKSPACE_ID:-unset}"`.
      If HERDR_ENV is not `1`, say this session is not running inside Herdr and stop.
    Derive TICKET = the argument uppercased (e.g. `SE-1234`) and SLUG = it
@@ -80,12 +80,12 @@ of the new tab's).
 6. Seed the orchestrator — one prompt, one sentence:
 
    ```bash
-   herdr agent prompt <SLUG>-orch "Read <brief-file-path>, then invoke /ticket drive <TICKET>." --wait --timeout 120000
+   herdr agent prompt <SLUG>-orch "Read <brief-file-path>, then invoke /jira-ticket:ticket drive <TICKET>." --wait --timeout 120000
    ```
 
    Never inline the ticket body into the prompt text. If step 3 failed and
    there is no brief file, send instead
-   `"Fetch Jira ticket <TICKET> with your available Jira tools, then invoke /ticket drive <TICKET>."`
+   `"Fetch Jira ticket <TICKET> with your available Jira tools, then invoke /jira-ticket:ticket drive <TICKET>."`
    On a timeout or `agent_prompt_stalled`, read the pane and report what is
    blocking instead of retrying blindly.
 
