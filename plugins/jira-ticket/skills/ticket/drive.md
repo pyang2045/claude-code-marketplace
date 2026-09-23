@@ -77,7 +77,7 @@ implemented. **Always pass the model explicitly; never Fable** (an omitted
 model is Fable):
 
 ```bash
-herdr agent start <slug>-<role> --kind claude --pane <P> -- --model claude-opus-5
+herdr agent start <slug>-<role> --kind claude --pane <P> -- --model claude-opus-5-5
 
 GIT_COMMON=$(git rev-parse --path-format=absolute --git-common-dir)
 herdr agent start <slug>-<role> --kind codex  --pane <P> -- -m gpt-6-luna -c model_reasoning_effort=xhigh \
