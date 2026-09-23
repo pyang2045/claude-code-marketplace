@@ -58,7 +58,18 @@ If the result's `reason` is not `shown`, say it in your pane as well.
 
 ## 3. Agents, on demand
 
-Roles: impl, reviewer, verifier, tester. Start one when there is work for it.
+Start a role when there is work for it.
+
+| Role | Answers | Does | Worktree |
+|---|---|---|---|
+| impl | — | writes the production change on its stack branch | writable, own branch |
+| reviewer | Is the code right? | reads the diff: bugs, edge cases, design, conventions, whether the tests really pin the change. Never runs it. Findings go back to impl. | detached |
+| tester | Is it pinned by automated tests that can fail? | writes and extends tests, runs the suite, mutation-checks guards (break the line, watch a named test go red, restore) | writable, own branch |
+| verifier | Does it work for real? | runs the real system: build, flash or device run, reproduce before and after, capture logs | detached |
+
+A reviewer judges; a tester and a verifier produce evidence anyone can re-run.
+So only the reviewer — and any second opinion — must be the other kind than the
+implementer; tester and verifier may be either.
 
 **Choose the kind per dispatch** by your judgment of the task — e.g. an
 independent review or a second opinion goes to the other kind than the one that
@@ -98,8 +109,8 @@ column:**
 pane is created `--cwd` that worktree:
 
 ```bash
-git worktree add .claude/worktrees/<task> <branch>             # a writer; the branch comes from gh stack (§5)
-git worktree add --detach .claude/worktrees/<task> <branch>    # reviewer/verifier/tester
+git worktree add .claude/worktrees/<task> <branch>             # impl, tester; the branch comes from gh stack (§5)
+git worktree add --detach .claude/worktrees/<task> <branch>    # reviewer, verifier
 ```
 
 One writer per file, across all worktrees. A verifier that checks out or
@@ -109,6 +120,26 @@ stashes does it in its own tree, never the implementer's.
 constraints, and this line with your real ORCH id:
 "Message me with `herdr agent prompt ORCH "<one line>"` when you finish, when
 you are blocked, and when you find something that contradicts this brief."
+
+**Every claude-kind impl dispatch also carries the advisor loop** (a Codex impl
+has no advisor):
+
+1. Call `advisor` before writing code, and again before reporting done.
+2. Fix blocking findings only — correctness bugs, missing or vacuous tests,
+   violations of the brief. Note the polish findings; do not chase them.
+3. At most 2 advisor rounds before reporting. Still blocking after that:
+   report them to ORCH and stop. No open-ended loop.
+4. "Clean" is objective gates — the tests pass with a non-zero executed count,
+   every new guard is mutation-checked. Not "the advisor has no more comments".
+5. The advisor contradicting the brief or the code: message ORCH. Never
+   silently follow either.
+6. The completion report lists the advisor findings impl rejected, with the
+   reason — that is the reviewer's starting point.
+
+The advisor reads impl's own transcript, so it shares impl's blind spots. It
+does **not** replace the independent reviewer of the other kind, and impl's
+report is still a claim (§6). Flow: impl (+advisor) → reviewer of the other
+kind → fixes back to impl.
 
 **Monitor** anyway — a crashed agent sends nothing: `herdr agent wait <name>`,
 `herdr agent get <name>`, `herdr agent read <name> --source recent-unwrapped --lines 120`.
@@ -244,3 +275,5 @@ Done decision lives.
 - A `gh stack` command run from an agent's worktree, or while an agent's worktree still has a stack branch checked out
 - `git worktree remove` for a pane that is still open
 - Invoking `/jira-ticket:ticket close` from `drive`
+- An impl still looping on the advisor past 2 rounds
+- "The advisor is clean" offered as verification
