@@ -106,7 +106,7 @@ Use this template exactly. Sections stay in this order; a section with nothing i
 ### Scope narrowing
 
 When invoked with a topic (`/whats-up auth`), filter every section to that scope, and make
-the narrowing visible in the headline — e.g. *"Narrowed to `plugins/obsidian`."* Anything
+the narrowing visible in the headline — e.g. *"Narrowed to `plugins/jira-ticket`."* Anything
 excluded stays excluded; do not smuggle unrelated items into **Follow-ups**.
 
 ## Boundaries
@@ -114,5 +114,3 @@ excluded stays excluded; do not smuggle unrelated items into **Follow-ups**.
 - **Read-only.** This skill never commits, pushes, stages, edits files, or starts work. It
   reports. If the next step is obvious and cheap, still stop and offer it.
 - **Not a handoff note.** This is an in-terminal briefing for the person already here.
-  Writing a durable handoff into a session log is `/obs-close`'s job — mention it if the
-  user sounds like they are wrapping up for the day.

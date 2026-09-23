@@ -16,7 +16,7 @@ from memory — the skill exists specifically to prevent that.
 
 - If `$ARGUMENTS` is empty, summarize the **whole session**.
 - If `$ARGUMENTS` names a topic, subsystem, file or directory (e.g. `/whats-up auth`,
-  `/whats-up plugins/obsidian`), narrow every section of the briefing to that scope, and
+  `/whats-up plugins/jira-ticket`), narrow every section of the briefing to that scope, and
   say in the headline that the view is narrowed.
 
 ## Non-negotiables
