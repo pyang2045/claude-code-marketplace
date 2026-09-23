@@ -52,7 +52,7 @@ of the new tab's).
    Do not split it.
 
 5. Start the orchestrator in LEFT. The orchestrator runs on Fable; if Fable is
-   unavailable, use `claude-opus-5` instead and say so in the report.
+   unavailable, use `claude-opus-5-5` instead and say so in the report.
 
    ```bash
    herdr agent start <SLUG>-orch --kind claude --pane <LEFT> -- --model claude-fable-5-1
