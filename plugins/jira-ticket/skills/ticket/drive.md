@@ -78,8 +78,16 @@ model is Fable):
 
 ```bash
 herdr agent start <slug>-<role> --kind claude --pane <P> -- --model claude-opus-5
-herdr agent start <slug>-<role> --kind codex  --pane <P> -- -m gpt-5.6-luna -c model_reasoning_effort=xhigh
+
+GIT_COMMON=$(git rev-parse --path-format=absolute --git-common-dir)
+herdr agent start <slug>-<role> --kind codex  --pane <P> -- -m gpt-6-luna -c model_reasoning_effort=xhigh \
+  -c sandbox_workspace_write.network_access=true -c "sandbox_workspace_write.writable_roots=[\"$GIT_COMMON\"]"
 ```
+
+An agent commits from its worktree into the main checkout's common `.git`, which
+the workspace-write sandbox blocks unless that path is a writable root, and it
+needs the network to fetch and install; a Bun project additionally needs
+`TMPDIR="$PWD/.tmp"` in the agent's environment.
 
 **Layout — you keep the full-height left column; agents stack in one right
 column:**
@@ -265,7 +273,7 @@ Done decision lives.
 ## Red flags — stop and re-read the section
 
 - Dispatching before the description audit or before the In Progress transition
-- An `agent start` line without `--model` / `-m`
+- An `agent start` line without `--model` / `-m`, or a codex start without `writable_roots`
 - `--direction right` on anything but ORCH, or `--direction down` on ORCH
 - Two agents' panes with the same `--cwd`
 - In Review while any PR still needs code
