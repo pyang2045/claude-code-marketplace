@@ -2,8 +2,7 @@
 
 ## Project Structure
 - Multi-plugin marketplace repo. Each plugin lives under `plugins/<name>/`
-- Each plugin is self-contained. Only `.claude-plugin/plugin.json` is required; `.mcp.json`, `commands/`, and `skills/` are optional (a plugin can be command-only, e.g. `obsidian`)
-- Plugins may ship non-Claude assets consumed at runtime (e.g. `obsidian/templates/*.base`)
+- Each plugin is self-contained. Only `.claude-plugin/plugin.json` is required; `.mcp.json`, `commands/`, and `skills/` are optional (a plugin can be skills-only, e.g. `jira-ticket`)
 - Root `.claude-plugin/marketplace.json` registers all plugins
 
 ## Plugin Conventions
@@ -13,6 +12,7 @@
 - SKILL.md requires YAML frontmatter with `name` and `description` fields
 - Commands require YAML frontmatter with `description` field
 - Author field uses object format: `{ "name": "..." }`
+- Marketplace entries do NOT list `skills`/`commands` — both are auto-discovered from the plugin's `commands/` and `skills/`; a bare name there fails the schema and breaks `claude plugin update`. Run `claude plugin validate .` before committing any manifest change
 - **Version bump is mandatory on every plugin change**: any edit under `plugins/<name>/` must bump that plugin's semver in BOTH `plugins/<name>/.claude-plugin/plugin.json` and its entry in root `.claude-plugin/marketplace.json` (keep the two in sync). Patch for fixes, minor for new commands/skills/features, major for breaking changes. Do this in the same commit — no separate "bump version" ask needed
 
 ## MCP Tool Naming
