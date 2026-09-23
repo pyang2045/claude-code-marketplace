@@ -38,4 +38,5 @@ require Herdr (`HERDR_ENV=1`); `close` does not.
 |---|---|
 | New ticket, want a workspace | `/jira-ticket:ticket start SE-1234` — one new tab, orchestrator only |
 | You are that orchestrator | `/jira-ticket:ticket drive SE-1234` — audit, status, agents, `gh stack` PRs |
+| You have ticket work but sit in another tab | hand the ticket's orchestrator a brief (`herdr agent prompt <slug>-orch "Read <path> ..."`); it dispatches and drives the agents in its own tab — see `drive.md` § Layout |
 | PRs merged or work abandoned | `/jira-ticket:ticket close` — docs, ticket comment, worktree |

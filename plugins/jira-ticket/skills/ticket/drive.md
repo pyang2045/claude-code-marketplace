@@ -79,6 +79,15 @@ column:**
   `herdr pane split <right-column-pane> --direction down --cwd <worktree> --no-focus`
 - Never split ORCH down. Never split a right-column pane to the right — that
   makes a third column.
+- **Every agent that works a ticket lives in that ticket's tab, and ORCH
+  drives it.** A session in another tab that has ticket work (a review loop,
+  a stacked fix, a device run) does not create or drive panes for it. It
+  hands ORCH a brief (`herdr agent prompt ORCH "Read <brief-path> ..."`) and
+  ORCH dispatches into its own right column, monitors, verifies and pushes.
+  A pane in another session's tab is not where the user looks for this
+  ticket's agents, and it dies unseen when that session ends or re-logs in.
+  If an outside session has already started such a pane, it hands the pane
+  over to ORCH with the brief path and stops prompting it.
 - Read each new id from `.result.pane.pane_id`. A pane that is still
   initializing returns `agent_pane_busy` on `agent start`; wait and retry. On
   `agent_not_ready`/`blocked`, `herdr agent read <name>`; if it is Claude Code's
@@ -211,6 +220,7 @@ Done decision lives.
 | Read the ticket, then went straight to `editJiraIssue`/`transitionJiraIssue`; 0/3 compared the description to the code | The description is the plan *before* the work. Audit it first; line numbers and premises drift. |
 | `herdr agent start se2628-impl --kind claude --pane <IMPL>` (no model) | No model = Fable, the orchestrator's model. Pass `--model` every time. |
 | `herdr pane split <IMPL> --direction right` for the second PR's agent | That is a third column. Right once, from ORCH; down after that. |
+| Splitting your OWN pane in another tab to run a ticket's implementer, reviewer or verifier | Ticket agents live in the ticket tab and ORCH drives them. Hand ORCH the brief instead. |
 | Reviewer and verifier created `--cwd` the implementer's worktree; verifier told to "stash the change … then restore" | A shared tree is a shared writer. Own worktree per agent. |
 | Dispatches used `--wait` and no message-back line | `--wait` ends at the first settle; a blocked or contradicting agent has no way to reach you. |
 | Moved to In Review when PR 1 opened, with PR 2 still to be written | Code still pending = In Progress. |
