@@ -107,11 +107,15 @@ column:**
   ticket's agents, and it dies unseen when that session ends or re-logs in.
   If an outside session has already started such a pane, it hands the pane
   over to ORCH with the brief path and stops prompting it.
-- Read each new id from `.result.pane.pane_id`. A pane that is still
-  initializing returns `agent_pane_busy` on `agent start`; wait and retry. On
-  `agent_not_ready`/`blocked`, `herdr agent read <name>`; if it is Claude Code's
-  workspace-trust prompt, `herdr agent send-keys <name> down`, then `enter`,
-  then `herdr agent wait <name>`.
+- Read each new id from `.result.pane.pane_id`, then label the pane with the
+  agent name it will hold: `herdr pane rename <P> <slug>-<role>`. A split pane
+  has no label, and the user cannot tell the panes apart without one. Rename
+  before `agent start` — it works on a pane whose shell is still coming up, and
+  `agent start` leaves the label alone (it sets only the terminal title).
+- A pane that is still initializing returns `agent_pane_busy` on `agent start`;
+  wait and retry. On `agent_not_ready`/`blocked`, `herdr agent read <name>`; if
+  it is Claude Code's workspace-trust prompt, `herdr agent send-keys <name>
+  down`, then `enter`, then `herdr agent wait <name>`.
 
 **Isolation:** every concurrently working agent gets its own worktree, and its
 pane is created `--cwd` that worktree:
@@ -276,6 +280,7 @@ Done decision lives.
 - An `agent start` line without `--model` / `-m`, or a codex start without `writable_roots`
 - `--direction right` on anything but ORCH, or `--direction down` on ORCH
 - Two agents' panes with the same `--cwd`
+- An agent pane left unlabelled
 - In Review while any PR still needs code
 - Any transition to Done
 - `gh stack submit` without `--auto`, or with `--open`; any hand-run `gh pr create`
