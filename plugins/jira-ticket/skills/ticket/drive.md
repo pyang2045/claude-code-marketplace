@@ -73,8 +73,8 @@ implementer; tester and verifier may be either.
 
 **Choose the kind per dispatch** by your judgment of the task — e.g. an
 independent review or a second opinion goes to the other kind than the one that
-implemented. **Always pass the model explicitly; never Fable** (an omitted
-model is Fable):
+implemented. **Always pass the model explicitly; never Fable** (Fable is reserved
+for the advisor, and an omitted model inherits whatever the user's default is):
 
 ```bash
 herdr agent start <slug>-<role> --kind claude --pane <P> -- --model claude-opus-5-5
@@ -261,7 +261,7 @@ Done decision lives.
 | What the orchestrator said or did | Reality |
 |---|---|
 | Read the ticket, then went straight to `editJiraIssue`/`transitionJiraIssue`; 0/3 compared the description to the code | The description is the plan *before* the work. Audit it first; line numbers and premises drift. |
-| `herdr agent start se2628-impl --kind claude --pane <IMPL>` (no model) | No model = Fable, the orchestrator's model. Pass `--model` every time. |
+| `herdr agent start se2628-impl --kind claude --pane <IMPL>` (no model) | No model = the user's default, not a choice. Pass `--model` every time. |
 | `herdr pane split <IMPL> --direction right` for the second PR's agent | That is a third column. Right once, from ORCH; down after that. |
 | Splitting your OWN pane in another tab to run a ticket's implementer, reviewer or verifier | Ticket agents live in the ticket tab and ORCH drives them. Hand ORCH the brief instead. |
 | Reviewer and verifier created `--cwd` the implementer's worktree; verifier told to "stash the change … then restore" | A shared tree is a shared writer. Own worktree per agent. |
