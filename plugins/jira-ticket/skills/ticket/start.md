@@ -51,11 +51,11 @@ of the new tab's).
    Read `.result.root_pane.pane_id` → LEFT and `.result.tab.tab_id` → TAB.
    Do not split it.
 
-5. Start the orchestrator in LEFT. The orchestrator runs on Fable; if Fable is
-   unavailable, use `claude-opus-5-5` instead and say so in the report.
+5. Start the orchestrator in LEFT. The orchestrator runs on Opus
+   (`claude-opus-5-5`); Fable is reserved for the advisor.
 
    ```bash
-   herdr agent start <SLUG>-orch --kind claude --pane <LEFT> -- --model claude-fable-5-1
+   herdr agent start <SLUG>-orch --kind claude --pane <LEFT> -- --model claude-opus-5-5
    ```
 
    If the start returns `agent_not_ready`, or the agent shows `blocked`, read
