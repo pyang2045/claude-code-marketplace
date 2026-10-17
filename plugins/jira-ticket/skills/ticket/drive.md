@@ -167,11 +167,18 @@ git worktree remove .claude/worktrees/<task>
 
 ## 4. Child tickets
 
-When the work turns up something that deserves its own ticket: create it with
-`createJiraIssue`, then link it. Find the link operation with `discover`
-("link two jira issues") and the link type with `listJiraIssueLinkTypes` —
-never guess an operation name. Default `Relates`; `Blocks` when the child
-blocks this ticket. Record the child key in a comment on this ticket.
+Whether a finding becomes a ticket at all, and what that ticket carries, is the
+repo's issue-tracker policy: the repo `CLAUDE.md` names it (phoenix:
+`doc/agents/issue-tracker.md`), and that doc names the tools that create and
+link tickets. Follow it; this section adds only what ORCH does around it.
+
+- Link the child to this ticket with a typed link: `Relates` by default,
+  `Blocks` when the child blocks this ticket. Never guess a link type or a tool
+  name; list them.
+- Record the child key in a comment on this ticket.
+- **Never dispatch an agent onto a child ticket without the user's new
+  authorization.** Authorization for this ticket does not extend to its
+  children.
 
 ## 5. Stacked PRs — `gh stack`
 
@@ -289,4 +296,5 @@ Done decision lives.
 - `git worktree remove` for a pane that is still open
 - Invoking `/jira-ticket:ticket close` from `drive`
 - An impl still looping on the advisor past 2 rounds
+- Dispatching any agent onto a child ticket the user has not authorized
 - "The advisor is clean" offered as verification

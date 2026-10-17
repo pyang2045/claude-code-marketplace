@@ -84,7 +84,8 @@ Comment on the ticket with:
 - **Any behavioural or data-shape change, called out separately and prominently**
   — anything QA or the phone/app side would notice. Name the commit that isolates
   it so it can be reverted alone.
-- Known gaps carried forward.
+- Known gaps carried forward. This is also where agent findings that were not
+  filed as tickets go.
 
 A comment is **additive and safe** — write it without asking.
 
